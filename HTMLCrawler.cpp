@@ -1,5 +1,5 @@
 #include "HTMLCrawler.h"
-
+#include <vector>
 using CURLOPT_WRITEFUNCTION_PTR = size_t(*)(void * ,size_t, size_t, void*);
 
 HTMLCrawler::HTMLCrawler(const std::string _sourceURL) : sourceURL(_sourceURL)
@@ -44,46 +44,51 @@ std::string HTMLCrawler::getHTML(const std::string encode)
 return " ";
 }
 
-std::string HTMLCrawler::Parse(const std::string Parsetag)
+std::vector<unsigned char *> HTMLCrawler::parse_all(const std::string sourceHTML, const std::string Parsetag)
 {
-	doc = htmlReadFile(Parsetag.c_str(), NULL, HTML_PARSE_NOBLANKS | HTML_PARSE_NOERROR | HTML_PARSE_NOWARNING | HTML_PARSE_NONET);
+	std::vector<unsigned char *> resultVector;
+	doc = htmlReadFile(sourceHTML.c_str(), NULL, HTML_PARSE_NOBLANKS | HTML_PARSE_NOERROR | HTML_PARSE_NOWARNING | HTML_PARSE_NONET);
 	if (doc == NULL) 
 	{
 	        fprintf(stderr, "Document not parsed successfully.\n");
-	   		return 0;
+			resultVector.clear();
+			return resultVector;
 	   				     
 	}
-	xmlXPathContextPtr xpathCtx = xmlXPathNewContext(doc);
 
-    xmlChar *xpath = (xmlChar*) "//a[@class='h_word']";
+	xmlXPathContextPtr xpathCtx = xmlXPathNewContext(doc);
+	//html -> xml DOM
+
+    xmlChar *xpath = (xmlChar*)Parsetag.c_str();
 	xmlXPathObjectPtr result = xmlXPathEvalExpression(xpath, xpathCtx);
 	xmlNodeSetPtr nodeset;
-//xmlChar *keyword;
-//
+
 	if(xmlXPathNodeSetIsEmpty(result->nodesetval))
 	{
 		std::cout << "no result! " << std::endl;
+		resultVector.clear();
+		return resultVector;
 	}
 
 	nodeset = result->nodesetval;
 	xmlBufferPtr nodeBuffer = xmlBufferCreate();
+	resultVector.reserve(nodeset->nodeNr);
 
 	for (int i=0; i < nodeset->nodeNr; i++)
    	{
 			xmlNodeDump(nodeBuffer,doc,nodeset->nodeTab[i],0,1);
 			std::cout << nodeBuffer->content << std::endl;
 			std::cout << "done!!"<< std::endl;
+			resultVector.push_back(nodeBuffer->content);
 			sleep(2);
 	}
-
-
-//
-	return "hi";
+	return  resultVector;
 }
 
 std::string HTMLCrawler::write()
 {
 	std::string filename = sourceURL.substr(9,5)+".xml";
+	//TODO:: hmm..
 	outputFile.open(filename,std::ios::out);
 	outputFile << readBuffer;
 	return filename;

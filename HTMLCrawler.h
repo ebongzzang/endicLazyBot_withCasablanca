@@ -13,6 +13,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+#include <vector>
 
 class HTMLCrawler
 {
@@ -20,7 +21,8 @@ class HTMLCrawler
 	HTMLCrawler(const std::string _sourceURL);
 	std::string getHTML(const std::string encode = " "); //return contents of html, default encode = UTF-8
 	std::string write(); //return filename
-	std::string Parse(const std::string Parsetag);
+	std::vector<unsigned char *> parse_all(const std::string sourceHTML, const std::string Parsetag);
+
 	~HTMLCrawler();
 
 	private:
