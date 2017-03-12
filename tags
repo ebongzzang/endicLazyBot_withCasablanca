@@ -19,16 +19,19 @@ handle_delete	restServer/LazyListener.cpp	/^void LazyListener::handle_delete(htt
 handle_get	restServer/LazyListener.cpp	/^void LazyListener::handle_get(http_request message)$/;"	f	class:LazyListener
 handle_post	restServer/LazyListener.cpp	/^void LazyListener::handle_post(http_request message)$/;"	f	class:LazyListener
 handle_put	restServer/LazyListener.cpp	/^void LazyListener::handle_put(http_request message)$/;"	f	class:LazyListener
+ltrim	main.cpp	/^static inline void ltrim(std::string &s)$/;"	f	file:
 m_listener	restServer/LazyListener.h	/^   	http_listener m_listener;$/;"	m	class:LazyListener
-main	main.cpp	/^int main(void)$/;"	f
+main	main.cpp	/^int main(int argc,char ** argv)$/;"	f
 main	restServer/LazyMain.cpp	/^int main(void)$/;"	f
 main	restServer/cpprest.cpp	/^int main(void)$/;"	f
 open	restServer/LazyListener.h	/^    pplx::task<void>open(){return m_listener.open();}$/;"	f	class:LazyListener
 outputFile	HTMLCrawler.h	/^	std::ofstream outputFile;$/;"	m	class:HTMLCrawler
-parse	HTMLCrawler.cpp	/^unsigned char * HTMLCrawler::parse(bool isFile, const std::string sourceHTML, const std::string Parsetag)$/;"	f	class:HTMLCrawler
-parse_all	HTMLCrawler.cpp	/^std::vector<unsigned char *> HTMLCrawler::parse_all(bool isFile, const std::string sourceHTML, const std::string Parsetag)$/;"	f	class:HTMLCrawler
+parse	HTMLCrawler.cpp	/^unsigned char * HTMLCrawler::parse(bool isFile, bool printText, const std::string sourceHTML, const std::string Parsetag)$/;"	f	class:HTMLCrawler
+parse_all	HTMLCrawler.cpp	/^std::vector<unsigned char *> HTMLCrawler::parse_all(bool isFile,bool printText, const std::string sourceHTML, const std::string Parsetag)$/;"	f	class:HTMLCrawler
 readBuffer	HTMLCrawler.h	/^	std::string readBuffer;$/;"	m	class:HTMLCrawler
 res	HTMLCrawler.h	/^	CURLcode res;$/;"	m	class:HTMLCrawler
+rtrim	main.cpp	/^static inline void rtrim(std::string &s)$/;"	f	file:
 sourceURL	HTMLCrawler.h	/^	std::string sourceURL;$/;"	m	class:HTMLCrawler
+trim	main.cpp	/^ static inline void trim(std::string &s)$/;"	f	file:
 write	HTMLCrawler.cpp	/^std::string HTMLCrawler::write()$/;"	f	class:HTMLCrawler
 ~HTMLCrawler	HTMLCrawler.cpp	/^HTMLCrawler::~HTMLCrawler()$/;"	f	class:HTMLCrawler

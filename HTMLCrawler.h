@@ -21,9 +21,9 @@ class HTMLCrawler
 	HTMLCrawler(const std::string _sourceURL);
 	std::string getHTML(const std::string encode = " "); //return contents of html, default encode = UTF-8
 	std::string write(); //return filename
-	std::vector<unsigned char *> parse_all(bool isFile, const std::string sourceHTML, const std::string Parsetag);
+	std::vector<unsigned char *> parse_all(bool isFile, bool printText, const std::string sourceHTML, const std::string Parsetag);
 	//memory = true .html = false 
-	unsigned char * parse(bool isFile, const std::string sourceHTML, const std::string Parsetag);
+	unsigned char * parse(bool isFile, bool printText, const std::string sourceHTML, const std::string Parsetag);
 	//memory = true .html = false 
 
 	~HTMLCrawler();

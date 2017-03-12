@@ -45,18 +45,17 @@ std::string HTMLCrawler::getHTML(const std::string encode)
 return " ";
 }
 
-std::vector<unsigned char *> HTMLCrawler::parse_all(bool isFile, const std::string sourceHTML, const std::string Parsetag)
+std::vector<unsigned char *> HTMLCrawler::parse_all(bool isFile,bool printText, const std::string sourceHTML, const std::string Parsetag)
 {
 	std::vector<unsigned char *> resultVector;
 	if(isFile)
 	{
-		doc = htmlReadMemory(sourceHTML.c_str(),sourceHTML.size(),NULL,NULL,HTML_PARSE_NOBLANKS | HTML_PARSE_NOERROR | HTML_PARSE_NOWARNING | HTML_PARSE_NONET);
+		doc = htmlReadFile(sourceHTML.c_str(), NULL, HTML_PARSE_NOERROR | HTML_PARSE_NOWARNING | HTML_PARSE_NONET);
 	}
 	else
 	{
-	doc = htmlReadFile(sourceHTML.c_str(), NULL, HTML_PARSE_NOBLANKS | HTML_PARSE_NOERROR | HTML_PARSE_NOWARNING | HTML_PARSE_NONET);
+		doc = htmlReadMemory(sourceHTML.c_str(),sourceHTML.size(),NULL,NULL, HTML_PARSE_NOERROR | HTML_PARSE_NOWARNING | HTML_PARSE_NONET);
 	}
-
 	if (doc == NULL) 
 	{
 	        fprintf(stderr, "Document not parsed successfully.\n");
@@ -75,7 +74,6 @@ std::vector<unsigned char *> HTMLCrawler::parse_all(bool isFile, const std::stri
 
 	if(xmlXPathNodeSetIsEmpty(result->nodesetval))
 	{
-		std::cout << "no result! " << std::endl;
 		resultVector.clear();
 		return resultVector;
 	}
@@ -86,27 +84,34 @@ std::vector<unsigned char *> HTMLCrawler::parse_all(bool isFile, const std::stri
    	{
 			xmlBufferPtr nodeBuffer = xmlBufferCreate();
 			xmlNodeDump(nodeBuffer,doc,nodeset->nodeTab[i],0,0);
-			resultVector.push_back(nodeBuffer->content);	
+			if(printText)
+			{
+				resultVector.push_back(xmlNodeGetContent(nodeset->nodeTab[i]));
+			}
+			else
+			{
+				resultVector.push_back(nodeBuffer->content);	
+			}
 	}
 
 	return  resultVector;
 }
 
-unsigned char * HTMLCrawler::parse(bool isFile, const std::string sourceHTML, const std::string Parsetag)
+unsigned char * HTMLCrawler::parse(bool isFile, bool printText, const std::string sourceHTML, const std::string Parsetag)
 {
 	if(isFile)
 	{
-		doc = htmlReadMemory(sourceHTML.c_str(),sourceHTML.size(),NULL,NULL,HTML_PARSE_NOBLANKS | HTML_PARSE_NOERROR | HTML_PARSE_NOWARNING | HTML_PARSE_NONET);
+		doc = htmlReadFile(sourceHTML.c_str(), NULL, HTML_PARSE_NOBLANKS | HTML_PARSE_NOERROR | HTML_PARSE_NOWARNING | HTML_PARSE_NONET);
 	}
 	else
 	{
-	doc = htmlReadFile(sourceHTML.c_str(), NULL, HTML_PARSE_NOBLANKS | HTML_PARSE_NOERROR | HTML_PARSE_NOWARNING | HTML_PARSE_NONET);
+		doc = htmlReadMemory(sourceHTML.c_str(),sourceHTML.size(),NULL,NULL,HTML_PARSE_NOBLANKS | HTML_PARSE_NOERROR | HTML_PARSE_NOWARNING | HTML_PARSE_NONET);
 	}
 
 	if (doc == NULL) 
 	{
 	        fprintf(stderr, "Document not parsed successfully.\n");
-			return (xmlChar *)" ";
+			return (xmlChar *)"";
 	   				     
 	}
 
@@ -121,7 +126,7 @@ unsigned char * HTMLCrawler::parse(bool isFile, const std::string sourceHTML, co
 	if(xmlXPathNodeSetIsEmpty(result->nodesetval))
 	{
 		std::cout << "no result! " << std::endl;
-		return (xmlChar *)" ";
+		return (xmlChar *)"";
 	}
 
 	nodeset = result->nodesetval;
@@ -129,10 +134,17 @@ unsigned char * HTMLCrawler::parse(bool isFile, const std::string sourceHTML, co
    	{
 			xmlBufferPtr nodeBuffer = xmlBufferCreate();
 			xmlNodeDump(nodeBuffer,doc,nodeset->nodeTab[i],0,0);
-			return nodeBuffer->content;
+			if(printText)
+			{
+				return xmlNodeGetContent(nodeset->nodeTab[i]);
+			}
+			else
+			{
+				return nodeBuffer->content;
+			}
 	}
 		std::cout << "unexpected error" << std::endl;
-		return (xmlChar *)" ";
+		return (xmlChar *)"";
 }
 std::string HTMLCrawler::write()
 {
