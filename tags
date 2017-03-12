@@ -1,0 +1,34 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.9~svn20110310	//
+HTMLCRAWLER_H	HTMLCrawler.h	2;"	d
+HTMLCrawler	HTMLCrawler.cpp	/^HTMLCrawler::HTMLCrawler(const std::string _sourceURL) : sourceURL(_sourceURL)$/;"	f	class:HTMLCrawler
+HTMLCrawler	HTMLCrawler.h	/^class HTMLCrawler$/;"	c
+LAZY_LISTENER_H	restServer/LazyListener.h	2;"	d
+LazyListener	restServer/LazyListener.cpp	/^LazyListener::LazyListener(utility::string_t url) : m_listener(url)$/;"	f	class:LazyListener
+LazyListener	restServer/LazyListener.h	/^class LazyListener$/;"	c
+close	restServer/LazyListener.h	/^    pplx::task<void>close(){return m_listener.close();}$/;"	f	class:LazyListener
+curl	HTMLCrawler.h	/^	CURL *curl;$/;"	m	class:HTMLCrawler
+dictionary	restServer/LazyListener.h	/^	std::map<utility::string_t, utility::string_t> dictionary;$/;"	m	class:LazyListener
+doc	HTMLCrawler.h	/^	htmlDocPtr doc;$/;"	m	class:HTMLCrawler
+getHTML	HTMLCrawler.cpp	/^std::string HTMLCrawler::getHTML(const std::string encode)$/;"	f	class:HTMLCrawler
+handle_delete	restServer/LazyListener.cpp	/^void LazyListener::handle_delete(http_request message)$/;"	f	class:LazyListener
+handle_get	restServer/LazyListener.cpp	/^void LazyListener::handle_get(http_request message)$/;"	f	class:LazyListener
+handle_post	restServer/LazyListener.cpp	/^void LazyListener::handle_post(http_request message)$/;"	f	class:LazyListener
+handle_put	restServer/LazyListener.cpp	/^void LazyListener::handle_put(http_request message)$/;"	f	class:LazyListener
+m_listener	restServer/LazyListener.h	/^   	http_listener m_listener;$/;"	m	class:LazyListener
+main	main.cpp	/^int main(void)$/;"	f
+main	restServer/LazyMain.cpp	/^int main(void)$/;"	f
+main	restServer/cpprest.cpp	/^int main(void)$/;"	f
+open	restServer/LazyListener.h	/^    pplx::task<void>open(){return m_listener.open();}$/;"	f	class:LazyListener
+outputFile	HTMLCrawler.h	/^	std::ofstream outputFile;$/;"	m	class:HTMLCrawler
+parse	HTMLCrawler.cpp	/^unsigned char * HTMLCrawler::parse(bool isFile, const std::string sourceHTML, const std::string Parsetag)$/;"	f	class:HTMLCrawler
+parse_all	HTMLCrawler.cpp	/^std::vector<unsigned char *> HTMLCrawler::parse_all(bool isFile, const std::string sourceHTML, const std::string Parsetag)$/;"	f	class:HTMLCrawler
+readBuffer	HTMLCrawler.h	/^	std::string readBuffer;$/;"	m	class:HTMLCrawler
+res	HTMLCrawler.h	/^	CURLcode res;$/;"	m	class:HTMLCrawler
+sourceURL	HTMLCrawler.h	/^	std::string sourceURL;$/;"	m	class:HTMLCrawler
+write	HTMLCrawler.cpp	/^std::string HTMLCrawler::write()$/;"	f	class:HTMLCrawler
+~HTMLCrawler	HTMLCrawler.cpp	/^HTMLCrawler::~HTMLCrawler()$/;"	f	class:HTMLCrawler

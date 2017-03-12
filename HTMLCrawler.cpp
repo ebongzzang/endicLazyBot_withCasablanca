@@ -1,5 +1,6 @@
 #include "HTMLCrawler.h"
 #include <vector>
+#include <string.h>
 using CURLOPT_WRITEFUNCTION_PTR = size_t(*)(void * ,size_t, size_t, void*);
 
 HTMLCrawler::HTMLCrawler(const std::string _sourceURL) : sourceURL(_sourceURL)
@@ -44,10 +45,18 @@ std::string HTMLCrawler::getHTML(const std::string encode)
 return " ";
 }
 
-std::vector<unsigned char *> HTMLCrawler::parse_all(const std::string sourceHTML, const std::string Parsetag)
+std::vector<unsigned char *> HTMLCrawler::parse_all(bool isFile, const std::string sourceHTML, const std::string Parsetag)
 {
 	std::vector<unsigned char *> resultVector;
+	if(isFile)
+	{
+		doc = htmlReadMemory(sourceHTML.c_str(),sourceHTML.size(),NULL,NULL,HTML_PARSE_NOBLANKS | HTML_PARSE_NOERROR | HTML_PARSE_NOWARNING | HTML_PARSE_NONET);
+	}
+	else
+	{
 	doc = htmlReadFile(sourceHTML.c_str(), NULL, HTML_PARSE_NOBLANKS | HTML_PARSE_NOERROR | HTML_PARSE_NOWARNING | HTML_PARSE_NONET);
+	}
+
 	if (doc == NULL) 
 	{
 	        fprintf(stderr, "Document not parsed successfully.\n");
@@ -59,7 +68,8 @@ std::vector<unsigned char *> HTMLCrawler::parse_all(const std::string sourceHTML
 	xmlXPathContextPtr xpathCtx = xmlXPathNewContext(doc);
 	//html -> xml DOM
 
-    xmlChar *xpath = (xmlChar*)Parsetag.c_str();
+	xmlChar *xpath = (xmlChar*)Parsetag.c_str();
+	//xmlChar *xpath = (xmlChar*)"//div[@class='section_card']//ul[@class='desc_lst']//li//p";
 	xmlXPathObjectPtr result = xmlXPathEvalExpression(xpath, xpathCtx);
 	xmlNodeSetPtr nodeset;
 
@@ -71,20 +81,59 @@ std::vector<unsigned char *> HTMLCrawler::parse_all(const std::string sourceHTML
 	}
 
 	nodeset = result->nodesetval;
-	xmlBufferPtr nodeBuffer = xmlBufferCreate();
 	resultVector.reserve(nodeset->nodeNr);
-
 	for (int i=0; i < nodeset->nodeNr; i++)
    	{
-			xmlNodeDump(nodeBuffer,doc,nodeset->nodeTab[i],0,1);
-			std::cout << nodeBuffer->content << std::endl;
-			std::cout << "done!!"<< std::endl;
-			resultVector.push_back(nodeBuffer->content);
-			sleep(2);
+			xmlBufferPtr nodeBuffer = xmlBufferCreate();
+			xmlNodeDump(nodeBuffer,doc,nodeset->nodeTab[i],0,0);
+			resultVector.push_back(nodeBuffer->content);	
 	}
+
 	return  resultVector;
 }
 
+unsigned char * HTMLCrawler::parse(bool isFile, const std::string sourceHTML, const std::string Parsetag)
+{
+	if(isFile)
+	{
+		doc = htmlReadMemory(sourceHTML.c_str(),sourceHTML.size(),NULL,NULL,HTML_PARSE_NOBLANKS | HTML_PARSE_NOERROR | HTML_PARSE_NOWARNING | HTML_PARSE_NONET);
+	}
+	else
+	{
+	doc = htmlReadFile(sourceHTML.c_str(), NULL, HTML_PARSE_NOBLANKS | HTML_PARSE_NOERROR | HTML_PARSE_NOWARNING | HTML_PARSE_NONET);
+	}
+
+	if (doc == NULL) 
+	{
+	        fprintf(stderr, "Document not parsed successfully.\n");
+			return (xmlChar *)" ";
+	   				     
+	}
+
+	xmlXPathContextPtr xpathCtx = xmlXPathNewContext(doc);
+	//html -> xml DOM
+
+	xmlChar *xpath = (xmlChar*)Parsetag.c_str();
+	//xmlChar *xpath = (xmlChar*)"//div[@class='section_card']//ul[@class='desc_lst']//li//p";
+	xmlXPathObjectPtr result = xmlXPathEvalExpression(xpath, xpathCtx);
+	xmlNodeSetPtr nodeset;
+
+	if(xmlXPathNodeSetIsEmpty(result->nodesetval))
+	{
+		std::cout << "no result! " << std::endl;
+		return (xmlChar *)" ";
+	}
+
+	nodeset = result->nodesetval;
+	for (int i=0; i < 1; i++)// Return only one element
+   	{
+			xmlBufferPtr nodeBuffer = xmlBufferCreate();
+			xmlNodeDump(nodeBuffer,doc,nodeset->nodeTab[i],0,0);
+			return nodeBuffer->content;
+	}
+		std::cout << "unexpected error" << std::endl;
+		return (xmlChar *)" ";
+}
 std::string HTMLCrawler::write()
 {
 	std::string filename = sourceURL.substr(9,5)+".xml";
