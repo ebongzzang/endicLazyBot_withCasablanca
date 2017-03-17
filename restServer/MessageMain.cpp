@@ -1,14 +1,14 @@
-#include "LazyListener.h"
+#include "MessageListener.h"
 #include <unistd.h>
 int main(void)
 {
-	utility::string_t address = ("http://localhost:8081/keyboard");
+	utility::string_t address = ("http://localhost:8082/message");
 	uri_builder uri(address);
 	auto addr = uri.to_uri().to_string();
-	LazyListener * lazy = new LazyListener(addr);
+	MessageListener * msg = new MessageListener(addr);
 	try
 	{
-		lazy->open().wait();
+		msg->open().wait();
 	}
 
 	catch(const std::exception &e)
@@ -19,7 +19,7 @@ int main(void)
 	std::string line;
 	std::getline(std::cin, line);
 
-	lazy->close().wait();
+	msg->close().wait();
 
 	return 0;
 }

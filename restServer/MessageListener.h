@@ -1,5 +1,5 @@
-#ifndef LAZY_LISTENER_H
-#define LAZY_LISTENER_H
+#ifndef MESSAGE_LISTENER_H
+#define MESSAGE_LISTENER_H
 #include "Listener.h"
 #include <cpprest/http_listener.h>
 #include <cpprest/json.h>
@@ -10,11 +10,11 @@ using namespace web;
 using namespace utility;
 
 
-class LazyListener : public Listener 
+class MessageListener : public Listener 
 {
 	public:
-	LazyListener(utility::string_t url);
-	~LazyListener();
+	MessageListener(utility::string_t url);
+	~MessageListener();
 	protected:
    	virtual void handle_get(http_request request);
    	virtual void handle_put(http_request request);
