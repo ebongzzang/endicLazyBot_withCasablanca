@@ -6,15 +6,11 @@ LazyListener::LazyListener(utility::string_t url) : Listener::Listener(url)
 }
 void LazyListener::handle_get(http_request message)
 {
-	    std::map<utility::string_t,utility::string_t> dic = {{"type","text"}};
 		json::value obj;
 	    std::cout <<  message.to_string() << std::endl;
-
-	    for(auto const &p : dic)
-		{
-			        obj[p.first] = json::value::string(p.second);    
-					    
-		}    
+		
+		obj["type"] = web::json::value::string("buttons");
+		obj["buttons"] = web::json::value::array({web::json::value::string("Search Word"), web::json::value::string("Enter Yourself")});
 
 	    message.reply(status_codes::OK,obj);
 
