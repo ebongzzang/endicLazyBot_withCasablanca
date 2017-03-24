@@ -39,7 +39,7 @@ int main(int argc,char ** argv)
 
 	for(std::vector<unsigned char *>::iterator it = entryVector.begin(); it != entryVector.end(); ++it)
 	{
-		auto word = crawler->parse(false,true,std::string(reinterpret_cast<char *>(*it)),"//a[@class='h_word']");
+		auto word = crawler->parse(false,true,std::string(reinterpret_cast<char *>(*it)),"//strong[@class='target']");
 		std::string wordStr(reinterpret_cast<char *>(word));
 		trim(wordStr);
 		std::cout << wordStr << std::endl;

@@ -58,7 +58,7 @@ std::vector<unsigned char *> HTMLCrawler::parse_all(bool isFile,bool printText, 
 	}
 	if (doc == NULL) 
 	{
-	        fprintf(stderr, "Document not parsed successfully.\n");
+	   //     fprintf(stderr, "Document not parsed successfully.\n");
 			resultVector.clear();
 			return resultVector;
 	   				     
@@ -67,7 +67,7 @@ std::vector<unsigned char *> HTMLCrawler::parse_all(bool isFile,bool printText, 
 	xmlXPathContextPtr xpathCtx = xmlXPathNewContext(doc);
 	//html -> xml DOM
 
-	xmlChar *xpath = (xmlChar*)Parsetag.c_str();
+	xmlChar* xpath = (xmlChar*)Parsetag.c_str();
 	//xmlChar *xpath = (xmlChar*)"//div[@class='section_card']//ul[@class='desc_lst']//li//p";
 	xmlXPathObjectPtr result = xmlXPathEvalExpression(xpath, xpathCtx);
 	xmlNodeSetPtr nodeset;
@@ -110,7 +110,7 @@ unsigned char * HTMLCrawler::parse(bool isFile, bool printText, const std::strin
 
 	if (doc == NULL) 
 	{
-	        fprintf(stderr, "Document not parsed successfully.\n");
+	     //   fprintf(stderr, "Document not parsed successfully.\n");
 			return (xmlChar *)"";
 	   				     
 	}
@@ -125,7 +125,7 @@ unsigned char * HTMLCrawler::parse(bool isFile, bool printText, const std::strin
 
 	if(xmlXPathNodeSetIsEmpty(result->nodesetval))
 	{
-		std::cout << "no result! " << std::endl;
+	//	std::cout << "no result! " << std::endl;
 		return (xmlChar *)"";
 	}
 
@@ -143,7 +143,7 @@ unsigned char * HTMLCrawler::parse(bool isFile, bool printText, const std::strin
 				return nodeBuffer->content;
 			}
 	}
-		std::cout << "unexpected error" << std::endl;
+	//	std::cout << "unexpected error" << std::endl;
 		return (xmlChar *)"";
 }
 std::string HTMLCrawler::write()
