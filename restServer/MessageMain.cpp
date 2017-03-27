@@ -15,9 +15,7 @@ int main(void)
 	{
 		printf("Error exception:%s\n", e.what());
 	}
-	std::cout << "Press ENTER to exit." << std::endl;
-	std::string line;
-	std::getline(std::cin, line);
+	pause();
 
 	msg->close().wait();
 

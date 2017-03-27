@@ -1,4 +1,26 @@
 #include "MessageListener.h"
+#include "../HTMLCrawler.h"
+#include <fstream>
+#include <regex>
+static inline void ltrim(std::string &s)
+{
+	    s.erase(s.begin(), std::find_if(s.begin(), s.end(),std::not1(std::ptr_fun<int, int>(std::isspace))));
+
+}
+
+static inline void rtrim(std::string &s)
+{
+	    s.erase(std::find_if(s.rbegin(), s.rend(), std::not1(std::ptr_fun<int, int>(std::isspace))).base(), s.end());
+
+}
+
+// trim from both ends (in place)
+ static inline void trim(std::string &s)
+{
+     ltrim(s);
+     rtrim(s);
+ }
+
 
 MessageListener::MessageListener(utility::string_t url) : Listener::Listener(url)
 {
@@ -20,28 +42,26 @@ void MessageListener::handle_post(http_request message)
 	json::value replyMsg;
 	json::value keyboard;
 
-	replyMsg["text"] = web::json::value::string(U("succeed!"));
-    keyboard["type"] = web::json::value::string(U("buttons"));
-	keyboard["buttons"] = web::json::value::array({web::json::value::string("again"),web::json::value::string("bye")});
+//	replyMsg["text"] = web::json::value::string(U("succeed!"));
 	//keyboard
 
 	//reply message
 	
+
+	auto userKey = json.at("user_key").serialize();
+	auto type = json.at("type").serialize();
+	auto content = json.at("content").serialize();
+	std::string searchResult = getNaverEndic(content); 
+
+	replyMsg["text"] = web::json::value::string(U(searchResult));
+    keyboard["type"] = web::json::value::string(U("text"));
+	//keyboard["buttons"] = web::json::value::array({web::json::value::string("again"),web::json::value::string("bye")});
+
 	obj["message"] = replyMsg;
 	obj["keyboard"] = keyboard;
-	std::cout << "obj" << obj.serialize() << std::endl;
-/*	auto array = json.as_array();
-	//add to obj(final return)
-	for(size_t i=0; i< array.size(); i++)
-	{
-		auto userKey = array[i].at(U("user_key")).as_string();
-		auto type = array[i].at(U("type")).as_string();
-		auto content = array[i].at(U("content")).as_string();
-		std::cout << userKey <<std::endl;
-		std::cout << type <<std::endl;;
-		std::cout << content << std::endl;
-	}    
-*/
+
+	std::cout << obj.serialize() << std::endl;
+
 	   // message.reply(status_codes::Created,obj);
 	    message.reply(status_codes::OK,obj);
 
@@ -53,4 +73,41 @@ void MessageListener::handle_put(http_request message)
 void MessageListener::handle_delete(http_request message)
 {
 
+}
+std::string MessageListener::getNaverEndic(std::string word)
+{
+	std::string result;
+	std::regex space("[[:space:]]");
+	std::string word_replace = std::regex_replace(word,space,"%20");
+	std::string test = "http://m.endic.naver.com/search.nhn?searchOption=all&query=" + word_replace;
+	std::cout << test <<std::endl;
+	std::string htmlBuffer;
+	std::vector<unsigned char *>::iterator it;
+
+	HTMLCrawler * crawler = new HTMLCrawler(test);
+	htmlBuffer = crawler->getHTML();
+	std::string htmlfilename = crawler->write();
+	auto entryVector = crawler->parse_all(false,false,htmlBuffer,"//div[@class='entry_search_word top']");
+
+	for(std::vector<unsigned char *>::iterator it = entryVector.begin(); it != entryVector.end(); ++it)
+	{
+		auto word = crawler->parse(false,true,std::string(reinterpret_cast<char *>(*it)),"//strong[@class='target']");
+		std::string wordStr(reinterpret_cast<char *>(word));
+		trim(wordStr);
+		std::cout << wordStr + '\n' << std::endl;
+		result.append(wordStr + '\n');
+
+		auto wordMean = crawler->parse_all(false,true,std::string(reinterpret_cast<char *>(*it)),"//li");
+
+		for(std::vector<unsigned char *>::iterator it2 = wordMean.begin(); it2 != wordMean.end(); ++it2)
+		{
+			std::string temp(reinterpret_cast<char *>(*it2));
+			trim(temp);
+			std::cout << temp << std::endl;
+			result.append(temp + '\n');
+		}
+		std::cout << '\n';
+		result.append("\n\n");
+	}
+		return result;
 }
