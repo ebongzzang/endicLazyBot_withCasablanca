@@ -4,6 +4,7 @@
 #include <cpprest/http_listener.h>
 #include <cpprest/json.h>
 #include <map>
+#include <string>
 using namespace web::http::experimental::listener;
 using namespace web::http;
 using namespace web;
@@ -20,6 +21,7 @@ class MessageListener : public Listener
    	virtual void handle_put(http_request request);
    	virtual void handle_post(http_request request);
    	virtual void handle_delete(http_request request);
+	std::string getNaverEndic(std::string word);
 	private:
 
 	
