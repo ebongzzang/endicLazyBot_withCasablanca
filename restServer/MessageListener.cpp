@@ -2,6 +2,7 @@
 #include "../HTMLCrawler.h"
 #include <fstream>
 #include <regex>
+#include <locale>
 static inline void ltrim(std::string &s)
 {
 	    s.erase(s.begin(), std::find_if(s.begin(), s.end(),std::not1(std::ptr_fun<int, int>(std::isspace))));
@@ -77,8 +78,11 @@ void MessageListener::handle_delete(http_request message)
 std::string MessageListener::getNaverEndic(std::string word)
 {
 	std::string result;
+	std::locale loc;
 	std::regex space("[[:space:]]");
+	std::vector<unsigned char *> entryVector;
 	std::string word_replace = std::regex_replace(word,space,"%20");
+
 	std::string test = "http://m.endic.naver.com/search.nhn?searchOption=all&query=" + word_replace;
 	std::cout << test <<std::endl;
 	std::string htmlBuffer;
@@ -86,8 +90,16 @@ std::string MessageListener::getNaverEndic(std::string word)
 
 	HTMLCrawler * crawler = new HTMLCrawler(test);
 	htmlBuffer = crawler->getHTML();
+	if(std::isalpha(word.at(1),loc))
+	{
+		entryVector = crawler->parse_all(false,false,htmlBuffer,"//div[@class='entry_search_word top']");
+	}
+	else
+	{
+		entryVector = crawler->parse_all(false,false,htmlBuffer,"//div[@class='entry_search_word top kr']");
+	}
+
 	std::string htmlfilename = crawler->write();
-	auto entryVector = crawler->parse_all(false,false,htmlBuffer,"//div[@class='entry_search_word top']");
 
 	for(std::vector<unsigned char *>::iterator it = entryVector.begin(); it != entryVector.end(); ++it)
 	{
