@@ -7,16 +7,15 @@
 CPPFLAGS	Makefile	/^CPPFLAGS = -std=c++11 -stdlib=libstdc++ -I \/usr\/include\/libcxxabi -lboost_system -lcurl -I \/usr\/include\/ -I \/usr\/include\/libxml2\/ -lxml2 -lcrypto -lssl -lcpprest$/;"	m
 LAZY_LISTENER_H	LazyListener.h	2;"	d
 LISTENER_H	Listener.h	2;"	d
-LazyListener	LazyListener.cpp	/^LazyListener::LazyListener(utility::string_t url) : Listener::Listener(url)$/;"	f	class:LazyListener
+LazyListener	LazyListener.cpp	/^LazyListener::LazyListener(utility::string_t _url) : Listener::Listener(_url)$/;"	f	class:LazyListener
 LazyListener	LazyListener.h	/^class LazyListener : public Listener $/;"	c
-Listener	Listener.cpp	/^Listener::Listener(utility::string_t url) : m_listener(url)$/;"	f	class:Listener
+Listener	Listener.cpp	/^Listener::Listener(utility::string_t _url)$/;"	f	class:Listener
 Listener	Listener.h	/^class Listener$/;"	c
 MESSAGE_LISTENER_H	MessageListener.h	2;"	d
-MessageListener	MessageListener.cpp	/^MessageListener::MessageListener(utility::string_t url) : Listener::Listener(url)$/;"	f	class:MessageListener
+MessageListener	MessageListener.cpp	/^MessageListener::MessageListener(utility::string_t _url) : Listener::Listener(_url)$/;"	f	class:MessageListener
 MessageListener	MessageListener.h	/^class MessageListener : public Listener $/;"	c
 RM	Makefile	/^RM = rm -rf$/;"	m
 close	Listener.h	/^    virtual pplx::task<void>close(){return m_listener.close();}$/;"	f	class:Listener
-dictionary	Listener.h	/^	std::map<utility::string_t, utility::string_t> dictionary;$/;"	m	class:Listener
 getNaverEndic	MessageListener.cpp	/^std::string MessageListener::getNaverEndic(std::string word)$/;"	f	class:MessageListener
 handle_delete	LazyListener.cpp	/^void LazyListener::handle_delete(http_request message)$/;"	f	class:LazyListener
 handle_delete	Listener.cpp	/^void Listener::handle_delete(http_request message)$/;"	f	class:Listener
@@ -34,7 +33,11 @@ ltrim	MessageListener.cpp	/^static inline void ltrim(std::string &s)$/;"	f	file:
 m_listener	Listener.h	/^   	http_listener m_listener;$/;"	m	class:Listener
 main	LazyMain.cpp	/^int main(void)$/;"	f
 main	MessageMain.cpp	/^int main(void)$/;"	f
-main	cpprest.cpp	/^int main(void)$/;"	f
+main	main.cpp	/^int main(void)$/;"	f
 open	Listener.h	/^    virtual pplx::task<void>open(){return m_listener.open();}$/;"	f	class:Listener
 rtrim	MessageListener.cpp	/^static inline void rtrim(std::string &s)$/;"	f	file:
+start	LazyListener.cpp	/^void LazyListener::start()$/;"	f	class:LazyListener
+start	Listener.cpp	/^void Listener::start()$/;"	f	class:Listener
+start	MessageListener.cpp	/^void MessageListener::start()$/;"	f	class:MessageListener
 trim	MessageListener.cpp	/^ static inline void trim(std::string &s)$/;"	f	file:
+url	Listener.h	/^    utility::string_t url;$/;"	m	class:Listener

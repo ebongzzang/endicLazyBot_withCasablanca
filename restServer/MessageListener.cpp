@@ -23,7 +23,11 @@ static inline void rtrim(std::string &s)
  }
 
 
-MessageListener::MessageListener(utility::string_t url) : Listener::Listener(url)
+MessageListener::MessageListener(utility::string_t _url) : Listener::Listener(_url)
+{
+
+}
+MessageListener::~MessageListener()
 {
 
 }
@@ -67,14 +71,35 @@ void MessageListener::handle_post(http_request message)
 	    message.reply(status_codes::OK,obj);
 
 }
+
 void MessageListener::handle_put(http_request message)
 {
 
 }
+
 void MessageListener::handle_delete(http_request message)
 {
 
 }
+
+void MessageListener::start()
+{
+	try
+	{
+		open().wait();
+	}
+
+	catch(const std::exception &e)
+	{
+		printf("Error exception:%s\n", e.what());
+	}
+
+	pause();
+
+	close().wait();
+	
+}
+
 std::string MessageListener::getNaverEndic(std::string word)
 {
 	std::string result;

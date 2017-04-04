@@ -1,6 +1,10 @@
 #include "LazyListener.h"
 
-LazyListener::LazyListener(utility::string_t url) : Listener::Listener(url)
+LazyListener::LazyListener(utility::string_t _url) : Listener::Listener(_url)
+{
+
+}
+LazyListener::~LazyListener()
 {
 
 }
@@ -27,5 +31,21 @@ void LazyListener::handle_put(http_request message)
 }
 void LazyListener::handle_delete(http_request message)
 {
+
+}
+
+void LazyListener::start()
+{
+	try
+	{
+		open().wait();
+	}
+
+	catch(const std::exception &e)
+	{
+		printf("Error exception:%s\n", e.what());
+	}
+	pause();
+	close().wait();
 
 }

@@ -3,7 +3,6 @@
 #include "Listener.h"
 #include <cpprest/http_listener.h>
 #include <cpprest/json.h>
-#include <map>
 using namespace web::http::experimental::listener;
 using namespace web::http;
 using namespace web;
@@ -13,7 +12,8 @@ using namespace utility;
 class LazyListener : public Listener 
 {
 	public:
-	LazyListener(utility::string_t url);
+	LazyListener(utility::string_t _url);
+	virtual void start();
 	~LazyListener();
 	protected:
    	virtual void handle_get(http_request request);

@@ -14,7 +14,8 @@ using namespace utility;
 class MessageListener : public Listener 
 {
 	public:
-	MessageListener(utility::string_t url);
+	MessageListener(utility::string_t _url);
+	virtual void start();
 	~MessageListener();
 	protected:
    	virtual void handle_get(http_request request);
