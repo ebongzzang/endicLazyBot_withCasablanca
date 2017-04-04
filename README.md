@@ -15,3 +15,5 @@ ubuntu 16.04 with clang++ on Amazon Web Service EC2
 Listener.cpp - Rest API base
 MessageListener.cpp - /meesage (POST) 夸没 贸府
 LazyListener.cpp - /keyboard (GET) 夸没 贸府
+
+![alt tag](https://github.com/ebongzzang/endicLazyBot_withCasablanca/blob/master/endicLazyBot_Result.PNG)
