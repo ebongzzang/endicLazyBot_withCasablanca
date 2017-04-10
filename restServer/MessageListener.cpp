@@ -145,6 +145,30 @@ std::string MessageListener::getNaverEndic(std::string word)
 		}
 		std::cout << '\n';
 		result.append("\n\n");
+
+		auto wordExamStc = crawler->parse(false,false,std::string(reinterpret_cast<char *>(*it)),"//p[@class='example_stc']");
+		auto wordExamStcVec = crawler->parse_all(false,true,std::string(reinterpret_cast<char *>(wordExamStc)),"//a");
+		for(std::vector<unsigned char *>::iterator it2 = wordExamStcVec.begin(); it2 != wordExamStcVec.end(); ++it2)
+		{	
+			std::string examTemp = std::string(reinterpret_cast<char *>(*it2));
+			if(examTemp.find("발음듣기") != std::string::npos) // npos = maximum 
+				break;
+			std::cout << examTemp << " ";
+			result.append(examTemp + " ");
+		}
+
+			std::cout << '\n';
+			result.append("\n\n");
+
+			auto wordExamMean = crawler->parse(false,true,std::string(reinterpret_cast<char *>(*it)),"//p[@class='example_mean']");
+			std::string meanTemp(reinterpret_cast<char *>(wordExamMean));
+			trim(meanTemp);
+
+			std::cout << meanTemp <<std::endl;
+			std::cout <<'\n';
+			result.append(meanTemp);
+			result.append("\n\n");
+
 	}
 		return result;
 }
